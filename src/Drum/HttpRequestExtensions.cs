@@ -6,7 +6,7 @@ namespace Drum
     {
         public static UriMaker<T> TryGetUriMakerFor<T>(this HttpRequestMessage req)
         {
-            var factory =  UriMakerRequestFlowHandler.TryGetUriMakerFactory(req);
+            var factory =  req.GetConfiguration().TryGetUriMakerFactory();
             return factory != null ? factory.NewUriMakerFor<T>(req) : null;
         }
     }

@@ -17,7 +17,7 @@ namespace Drum.Tests
            
             // Web API routes
             var drumContext = config.MapHttpAttributeRoutesAndUseUriMaker(new TypedDirectRouteProvider());
-            config.FlowUriMakerContextOnRequests(drumContext);
+            //config.FlowUriMakerContextOnRequests(drumContext);
             config.TypedRoute("api/typedroutes/resources", r => r.Action<TypedRoutesController>(c => c.GetAll()));
             config.TypedRoute("api/typedroutes/resources", r => r.Action<TypedRoutesController>(c => c.GetPaged(Param.Any<int>(), Param.Any<int>())));
             config.TypedRoute("api/typedroutes/resources/{id:int}", r => r.Action<TypedRoutesController>(c => c.GetById(Param.Any<int>())));

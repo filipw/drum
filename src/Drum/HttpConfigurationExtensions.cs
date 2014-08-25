@@ -5,6 +5,8 @@ namespace Drum
 {
     public static class HttpConfigurationExtensions
     {
+        private const string Key = "UriMakerContext";
+
         public static UriMakerContext MapHttpAttributeRoutesAndUseUriMaker(
             this HttpConfiguration configuration,
             IDirectRouteProvider directRouteProvider = null)
@@ -13,12 +15,20 @@ namespace Drum
             var decorator = new DecoratorRouteProvider(directRouteProvider);
             configuration.MapHttpAttributeRoutes(decorator);
             var uriMakerContext = new UriMakerContext(decorator.RouteMap);
+
+            configuration.Properties[Key] = uriMakerContext;
+
             return uriMakerContext;
         }
 
-        public static void FlowUriMakerContextOnRequests(this HttpConfiguration configuration, UriMakerContext uriMakerContext)
+        public static UriMakerContext TryGetUriMakerFactory(this HttpConfiguration configuration)
         {
-            configuration.MessageHandlers.Add(new UriMakerRequestFlowHandler(uriMakerContext));
+            object value;
+            if (!configuration.Properties.TryGetValue(Key, out value))
+            {
+                return null;
+            }
+            return value as UriMakerContext;
         }
     }
 }
